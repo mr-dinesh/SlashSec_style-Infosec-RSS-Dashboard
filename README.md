@@ -1,4 +1,4 @@
-# //SlashSec — Intelligence Dashboard
+# //SlashSec — RSS Dashboard
 
 > **News for Defenders. Stuff that Matters.**
 
