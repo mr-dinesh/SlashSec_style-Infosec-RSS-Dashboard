@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<title>SlashSec — News for Defenders. Stuff that Matters.</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* ═══════════════════════════
+   THEMES
+═══════════════════════════ */
+[data-theme="dark"] {
+  --bg:         #0e0f10;
+  --bg-alt:     #141618;
+  --surface:    #1a1c1e;
+  --surface2:   #222426;
+  --border:     #2a2d30;
+  --border2:    #363a3e;
+  --text:       #c4c8cc;
+  --text-dim:   #5a6170;
+  --text-muted: #3d4450;
+  --heading:    #e8eaec;
+  --link:       #6699cc;
+  --link-vis:   #9966bb;
+  --high:       #e05252;
+  --medium:     #cc8833;
+  --low:        #449944;
+  --nav-bg:     #1a1c1e;
+  --nav-border: #2e3136;
+  --masthead-bg:#111315;
+  --skel-a:     #222426;
+  --skel-b:     #2a2e32;
+  --input-bg:   #141618;
+}
+[data-theme="bright"] {
+  --bg:         #f0ece4;
+  --bg-alt:     #e8e4dc;
+  --surface:    #faf8f4;
+  --surface2:   #f0ece4;
+  --border:     #c8c0b4;
+  --border2:    #b0a898;
+  --text:       #2c2420;
+  --text-dim:   #7a6858;
+  --text-muted: #a09080;
+  --heading:    #111008;
+  --link:       #336699;
+  --link-vis:   #7733aa;
+  --high:       #cc2222;
+  --medium:     #996611;
+  --low:        #226622;
+  --nav-bg:     #e8e0d4;
+  --nav-border: #c0b8ac;
+  --masthead-bg:#1a1208;
+  --skel-a:     #e0dcd4;
+  --skel-b:     #ccc8c0;
+  --input-bg:   #f0ece4;
+}
+:root {
+  --sans-c:     #e8a020;
+  --schneier-c: #8888dd;
+  --krebs-c:    #dd6644;
+  --bleeping-c: #44aa77;
+  --thisweek-c: #4499cc;
+  --serif:  'IBM Plex Serif', Georgia, 'Times New Roman', serif;
+  --sans:   'IBM Plex Sans', system-ui, sans-serif;
+  --mono:   'IBM Plex Mono', 'Courier New', monospace;
+}
+
+/* ═══════════════════════════
+   RESET
+═══════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--sans);
+  font-size:14px;
+  line-height:1.55;
+  min-height:100vh;
+  transition:background .25s,color .25s;
+}
+a{color:var(--link);text-decoration:none;}
+a:visited{color:var(--link-vis);}
+a:hover{text-decoration:underline;}
+
+/* ═══════════════════════════
+   MASTHEAD
+═══════════════════════════ */
+.masthead{
+  background:var(--masthead-bg);
+  border-bottom:3px solid var(--sans-c);
+  padding:0;
+}
+.masthead-inner{
+  max-width:1200px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 16px;
+  flex-wrap:wrap;gap:10px;
+}
+.logo-block{display:flex;flex-direction:column;gap:2px;}
+.logo-text{
+  font-family:var(--mono);font-weight:700;
+  font-size:clamp(22px,3vw,30px);
+  color:#fff;letter-spacing:-.02em;line-height:1;
+}
+.logo-text .slash{color:var(--sans-c);}
+.logo-tagline{
+  font-family:var(--mono);font-size:11px;
+  color:#888;letter-spacing:.04em;
+}
+.masthead-right{
+  display:flex;align-items:center;gap:8px;
+}
+
+/* ═══════════════════════════
+   NAV BAR
+═══════════════════════════ */
+.navbar{
+  background:var(--nav-bg);
+  border-bottom:1px solid var(--nav-border);
+  position:sticky;top:0;z-index:100;
+}
+.navbar-inner{
+  max-width:1200px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 16px;
+  flex-wrap:wrap;
+}
+.nav-links{
+  display:flex;align-items:center;
+  font-family:var(--mono);font-size:12px;
+}
+.nav-link{
+  display:inline-block;
+  padding:8px 12px;
+  color:var(--text-dim);
+  border-bottom:2px solid transparent;
+  cursor:pointer;
+  transition:color .15s,border-color .15s;
+  white-space:nowrap;
+  background:none;border-top:none;border-left:none;border-right:none;
+}
+.nav-link:hover,.nav-link.active{
+  color:var(--heading);
+  border-bottom-color:var(--sans-c);
+}
+.nav-link.active{color:var(--sans-c);}
+.nav-right{display:flex;align-items:center;gap:6px;padding:5px 0;}
+
+/* ═══════════════════════════
+   API BAR (collapsible)
+═══════════════════════════ */
+.apibar-wrap{
+  background:var(--bg-alt);
+  border-bottom:1px solid var(--border);
+  padding:6px 0;
+}
+.apibar-inner{
+  max-width:1200px;margin:0 auto;
+  display:flex;align-items:center;gap:10px;
+  padding:0 16px;
+}
+.api-label{
+  font-family:var(--mono);font-size:10px;color:var(--text-dim);
+  text-transform:uppercase;letter-spacing:.08em;white-space:nowrap;
+}
+.api-input{
+  flex:1;background:transparent;border:none;outline:none;
+  color:var(--heading);font-family:var(--mono);font-size:12px;min-width:0;
+}
+.api-input::placeholder{color:var(--text-muted);}
+
+/* ═══════════════════════════
+   PAGE SHELL
+═══════════════════════════ */
+.page{
+  max-width:1200px;margin:0 auto;
+  padding:16px;
+  display:grid;
+  grid-template-columns:1fr 240px;
+  gap:20px;
+  align-items:start;
+}
+@media(max-width:860px){.page{grid-template-columns:1fr;}}
+
+/* ═══════════════════════════
+   STATUS STRIP
+═══════════════════════════ */
+.status-strip{
+  grid-column:1/-1;
+  display:flex;align-items:center;gap:8px;
+  font-family:var(--mono);font-size:11px;color:var(--text-dim);
+  padding:6px 0;
+  border-bottom:1px solid var(--border);
+  margin-bottom:4px;
+}
+.sdot{width:7px;height:7px;border-radius:50%;background:var(--text-dim);}
+.sdot.live{background:var(--low);box-shadow:0 0 5px var(--low);animation:blink 1.4s ease-in-out infinite;}
+.sdot.idle{background:var(--text-muted);}
+.sdot.err {background:var(--high);}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+
+.errorbox{
+  grid-column:1/-1;
+  background:rgba(200,40,40,.08);border:1px solid rgba(200,40,40,.25);
+  padding:8px 12px;font-family:var(--mono);font-size:11px;color:var(--high);
+  display:none;
+}
+
+/* feed-progress pips */
+.pip-row{
+  grid-column:1/-1;
+  display:none;flex-wrap:wrap;gap:6px;padding:4px 0 8px;
+}
+.pip{
+  display:flex;align-items:center;gap:5px;
+  font-family:var(--mono);font-size:10px;color:var(--text-dim);
+  padding:3px 9px;border:1px solid var(--border);background:var(--surface);
+}
+.pip .pd{width:6px;height:6px;border-radius:50%;background:var(--text-dim);}
+.pip.loading .pd{animation:blink 1s ease-in-out infinite;}
+.pip.ok{border-color:rgba(68,153,68,.4);color:var(--low);}
+.pip.ok .pd{background:var(--low);}
+.pip.fail{border-color:rgba(224,82,82,.4);color:var(--high);}
+.pip.fail .pd{background:var(--high);}
+
+/* ═══════════════════════════
+   MAIN COLUMN
+═══════════════════════════ */
+.main-col{}
+
+/* ─── Section header (like Slashdot category dividers) ─── */
+.section-header{
+  display:flex;align-items:center;gap:0;
+  margin-bottom:14px;
+  border-bottom:2px solid var(--border2);
+  padding-bottom:6px;
+}
+.section-header-text{
+  font-family:var(--mono);font-size:11px;font-weight:700;
+  color:var(--text-dim);text-transform:uppercase;letter-spacing:.1em;
+}
+.section-header-line{flex:1;}
+
+/* Filter chips — inline with section header */
+.filter-chips{display:flex;gap:1px;margin-left:12px;}
+.fchip{
+  padding:3px 10px;
+  font-family:var(--mono);font-size:10px;
+  border:1px solid var(--border2);background:var(--surface);
+  color:var(--text-dim);cursor:pointer;
+  transition:all .12s;
+  letter-spacing:.04em;
+}
+.fchip:first-child{border-radius:3px 0 0 3px;}
+.fchip:last-child{border-radius:0 3px 3px 0;}
+.fchip:not(:first-child){border-left:none;}
+.fchip:hover{color:var(--heading);background:var(--surface2);}
+.fchip.fa{border-color:var(--sans-c);color:var(--sans-c);background:rgba(232,160,32,.08);}
+.fchip.fh{border-color:var(--high);color:var(--high);background:rgba(224,82,82,.08);}
+.fchip.fm{border-color:var(--medium);color:var(--medium);background:rgba(204,136,51,.08);}
+.fchip.fl{border-color:var(--low);color:var(--low);background:rgba(68,153,68,.08);}
+
+/* ─── Story entry — THE core Slashdot unit ─── */
+.story{
+  border-bottom:1px solid var(--border);
+  padding:14px 0;
+  animation:fadeIn .3s ease both;
+}
+.story.dimmed{opacity:.15;pointer-events:none;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+
+/* Source coloured accent strip */
+.story-src-bar{
+  width:100%;height:3px;
+  background:var(--sc,var(--border2));
+  margin-bottom:10px;
+  border-radius:1px;
+}
+
+/* Headline */
+.story-title{
+  font-family:var(--serif);
+  font-size:18px;font-weight:700;line-height:1.25;
+  margin-bottom:6px;
+}
+.story-title a{
+  color:var(--heading);
+  text-decoration:none;
+  transition:color .12s;
+}
+.story-title a:hover{color:var(--link);}
+.story-title a:visited{color:var(--link-vis);}
+
+/* Byline — "Posted by X on Y from the Z dept." */
+.story-byline{
+  font-family:var(--mono);font-size:11px;color:var(--text-dim);
+  margin-bottom:8px;line-height:1.4;
+  display:flex;align-items:center;flex-wrap:wrap;gap:4px;
+}
+.byline-src{
+  display:inline-flex;align-items:center;gap:4px;
+  font-weight:600;color:var(--sc,var(--text-dim));
+}
+.byline-sep{color:var(--text-muted);margin:0 2px;}
+.byline-dept{font-style:italic;color:var(--text-dim);}
+
+/* Score pill — Slashdot "Score: X" style */
+.score-pill{
+  display:inline-flex;align-items:center;gap:4px;
+  font-family:var(--mono);font-size:10px;font-weight:600;
+  padding:1px 7px;border:1px solid var(--sc-border,var(--border2));
+  background:var(--sc-bg,transparent);
+  color:var(--sc,var(--text-dim));
+  letter-spacing:.04em;
+  vertical-align:middle;
+}
+.score-pill.sev-high   {--sc:var(--high);  --sc-border:rgba(224,82,82,.4);  --sc-bg:rgba(224,82,82,.08);}
+.score-pill.sev-medium {--sc:var(--medium);--sc-border:rgba(204,136,51,.4); --sc-bg:rgba(204,136,51,.08);}
+.score-pill.sev-low    {--sc:var(--low);   --sc-border:rgba(68,153,68,.4);  --sc-bg:rgba(68,153,68,.08);}
+
+/* Body text */
+.story-body{
+  font-size:14px;line-height:1.68;color:var(--text);
+  margin-bottom:10px;
+}
+
+/* Tags + read-more row */
+.story-footer{
+  display:flex;align-items:center;flex-wrap:wrap;gap:8px;
+}
+.story-tags{display:flex;flex-wrap:wrap;gap:5px;}
+.stag{
+  font-family:var(--mono);font-size:10px;
+  color:var(--sc,var(--text-dim));
+  background:color-mix(in srgb,var(--sc,#666) 10%,transparent);
+  border:1px solid color-mix(in srgb,var(--sc,#666) 28%,transparent);
+  padding:1px 7px;letter-spacing:.04em;
+}
+.story-readmore{
+  margin-left:auto;
+  font-family:var(--mono);font-size:11px;
+  color:var(--link);font-weight:600;
+  white-space:nowrap;
+}
+.story-readmore:hover{text-decoration:underline;}
+.rss-tick{
+  font-family:var(--mono);font-size:10px;
+  color:var(--low);
+}
+
+/* Skeleton stories */
+.sk-story{border-bottom:1px solid var(--border);padding:14px 0;}
+.sk{background:linear-gradient(90deg,var(--skel-a) 25%,var(--skel-b) 50%,var(--skel-a) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:2px;}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* ═══════════════════════════
+   SIDEBAR
+═══════════════════════════ */
+.sidebar{
+  display:flex;flex-direction:column;gap:14px;
+  position:sticky;top:45px;
+}
+.sidebar-box{
+  background:var(--surface);
+  border:1px solid var(--border);
+  font-family:var(--mono);font-size:12px;
+}
+.sidebar-box-head{
+  background:var(--surface2);
+  border-bottom:1px solid var(--border);
+  padding:6px 10px;
+  font-size:11px;font-weight:700;
+  color:var(--text-dim);text-transform:uppercase;letter-spacing:.09em;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.sidebar-box-body{padding:10px;}
+
+/* Stat rows */
+.sb-stat{
+  display:flex;justify-content:space-between;align-items:baseline;
+  padding:5px 0;border-bottom:1px solid var(--border);
+  cursor:pointer;
+}
+.sb-stat:last-child{border-bottom:none;}
+.sb-stat:hover .sb-label{color:var(--heading);}
+.sb-label{font-size:11px;color:var(--text-dim);}
+.sb-val{font-size:15px;font-weight:700;color:var(--sc,var(--heading));}
+
+/* Source list */
+.src-row{
+  display:flex;align-items:center;gap:7px;
+  padding:5px 0;border-bottom:1px solid var(--border);font-size:11px;
+}
+.src-row:last-child{border-bottom:none;}
+.src-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.src-name{flex:1;color:var(--text);}
+.src-n{font-weight:700;color:var(--sc,var(--heading));}
+
+/* Feed status pips in sidebar */
+.feed-status-row{
+  display:flex;align-items:center;gap:6px;
+  padding:4px 0;border-bottom:1px solid var(--border);font-size:11px;
+}
+.feed-status-row:last-child{border-bottom:none;}
+.fsr-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+
+/* Tag cloud */
+.tag-cloud{display:flex;flex-wrap:wrap;gap:4px;}
+.tc-tag{
+  font-size:10px;padding:2px 7px;
+  border:1px solid var(--border2);color:var(--text-dim);
+  cursor:default;
+}
+.tc-n{color:var(--text-muted);margin-left:3px;}
+
+/* ═══════════════════════════
+   BUTTONS
+═══════════════════════════ */
+.btn{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:5px 12px;border:1px solid var(--border2);
+  background:var(--surface);color:var(--text-dim);
+  font-family:var(--mono);font-size:11px;cursor:pointer;
+  transition:all .12s;letter-spacing:.04em;
+}
+.btn:hover{border-color:var(--sans-c);color:var(--sans-c);}
+.btn:disabled{opacity:.35;cursor:not-allowed;}
+.btn.primary{
+  background:var(--sans-c);color:#0e0f10;
+  border-color:var(--sans-c);font-weight:700;
+}
+.btn.primary:hover{background:#f0b030;}
+.btn.primary:disabled{opacity:.4;}
+.icon-btn{
+  width:30px;height:30px;display:flex;align-items:center;justify-content:center;
+  border:1px solid var(--border);background:transparent;
+  color:var(--text-dim);font-size:14px;cursor:pointer;transition:all .12s;
+}
+.icon-btn:hover{border-color:var(--sans-c);color:var(--sans-c);}
+
+/* ═══════════════════════════
+   FOOTER QUOTE
+═══════════════════════════ */
+.site-footer{
+  background:var(--masthead-bg);
+  border-top:3px solid var(--border2);
+  margin-top:30px;
+  padding:28px 16px 20px;
+}
+.footer-inner{
+  max-width:1200px;margin:0 auto;
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+}
+.quote-block{
+  font-family:var(--serif);
+  font-style:italic;
+  font-size:15px;
+  color:#888;
+  text-align:center;
+  max-width:680px;
+  line-height:1.7;
+}
+.quote-block::before{content:'\201C';font-size:32px;color:var(--sans-c);line-height:0;vertical-align:-12px;margin-right:4px;}
+.quote-block::after {content:'\201D';font-size:32px;color:var(--sans-c);line-height:0;vertical-align:-12px;margin-left:4px;}
+.quote-attr{
+  font-family:var(--mono);font-size:11px;color:var(--text-muted);
+  letter-spacing:.05em;
+}
+.footer-meta{
+  font-family:var(--mono);font-size:10px;color:var(--text-muted);
+  text-align:center;margin-top:8px;border-top:1px solid var(--border);
+  padding-top:10px;width:100%;
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ MASTHEAD ═══ -->
+<div class="masthead">
+  <div class="masthead-inner">
+    <div class="logo-block">
+      <div class="logo-text"><span class="slash">//</span>SlashSec</div>
+      <div class="logo-tagline">News for Defenders. Stuff that Matters.</div>
+    </div>
+    <div class="masthead-right">
+      <button class="icon-btn" id="themeBtn" onclick="toggleTheme()" title="Toggle theme">☾</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ NAVBAR ═══ -->
+<nav class="navbar">
+  <div class="navbar-inner">
+    <div class="nav-links">
+      <button class="nav-link active" id="nav-feed"    onclick="setMainView('feed')">All Stories</button>
+      <button class="nav-link"        id="nav-summary" onclick="setMainView('summary')">Dashboard</button>
+      <span style="font-family:var(--mono);font-size:10px;color:var(--text-muted);padding:8px 10px;">|</span>
+      <span style="font-family:var(--mono);font-size:10px;color:var(--text-muted);padding:8px 0;" id="nav-dateline">—</span>
+    </div>
+    <div class="nav-right">
+      <span style="font-family:var(--mono);font-size:10px;color:var(--text-muted);" id="nav-count"></span>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══ STICKY API BAR — always visible, never scrolls away ═══ -->
+<div id="apibar-sticky" style="
+  position:sticky;top:37px;z-index:99;
+  background:var(--bg-alt);
+  border-bottom:2px solid var(--sans-c);
+  padding:0;
+">
+  <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:0;padding:0 16px;">
+    <!-- Label -->
+    <span style="
+      font-family:var(--mono);font-size:10px;font-weight:700;
+      color:var(--sans-c);text-transform:uppercase;letter-spacing:.1em;
+      white-space:nowrap;padding:10px 12px 10px 0;
+      border-right:1px solid var(--border2);margin-right:12px;
+    ">⬡ Groq API Key</span>
+    <!-- Input — full visible, readable in both themes -->
+    <input
+      id="apikey"
+      type="password"
+      placeholder="Paste your gsk_… key here (free at console.groq.com)"
+      autocomplete="off"
+      style="
+        flex:1;min-width:0;
+        background:transparent;
+        border:none;outline:none;
+        font-family:var(--mono);font-size:13px;
+        color:var(--heading);
+        padding:10px 0;
+        caret-color:var(--sans-c);
+      "
+    >
+    <!-- Show/hide toggle -->
+    <button id="toggleVis" title="Show/hide key" onclick="toggleKeyVisibility()" style="
+      background:none;border:none;cursor:pointer;
+      font-family:var(--mono);font-size:11px;color:var(--text-dim);
+      padding:10px 10px;white-space:nowrap;
+      transition:color .15s;
+    " onmouseover="this.style.color='var(--heading)'" onmouseout="this.style.color='var(--text-dim)'">👁 show</button>
+    <!-- Separator -->
+    <div style="width:1px;height:24px;background:var(--border2);margin:0 8px;"></div>
+    <!-- Refresh -->
+    <button id="refreshBtn" onclick="runPipeline()" style="
+      display:inline-flex;align-items:center;gap:6px;
+      background:var(--sans-c);color:#0e0f10;
+      border:none;padding:7px 18px;
+      font-family:var(--mono);font-size:12px;font-weight:700;
+      letter-spacing:.05em;cursor:pointer;
+      white-space:nowrap;
+      transition:background .15s;
+      margin:6px 0;
+    " onmouseover="this.style.background='#f0b030'" onmouseout="this.style.background='var(--sans-c)'">▶ Fetch Stories</button>
+  </div>
+</div>
+
+<!-- ═══ PAGE BODY ═══ -->
+<div class="page">
+
+  <!-- Status strip (full-width) -->
+  <div class="status-strip" style="grid-column:1/-1">
+    <div class="sdot idle" id="sdot"></div>
+    <span id="stext">Enter your Groq API key and click Fetch Stories.</span>
+  </div>
+  <div class="errorbox" id="errorbox" style="grid-column:1/-1"></div>
+  <div class="pip-row" id="pip-row" style="grid-column:1/-1"></div>
+
+  <!-- ═══ MAIN COLUMN ═══ -->
+  <main class="main-col" id="main-col">
+
+    <!-- Feed View -->
+    <div id="view-feed">
+      <div class="section-header">
+        <span class="section-header-text">Latest Stories</span>
+        <div class="filter-chips" id="filter-chips" style="display:none">
+          <button class="fchip fa" onclick="applyFilter('all')">All</button>
+          <button class="fchip" data-f="high"   onclick="applyFilter('high')">High</button>
+          <button class="fchip" data-f="medium" onclick="applyFilter('medium')">Medium</button>
+          <button class="fchip" data-f="low"    onclick="applyFilter('low')">Low</button>
+        </div>
+      </div>
+      <div id="story-list"></div>
+    </div>
+
+    <!-- Summary / Dashboard view -->
+    <div id="view-summary" style="display:none">
+      <div class="section-header"><span class="section-header-text">Intelligence Dashboard</span></div>
+
+      <!-- Big stat cards -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin-bottom:20px;" id="dash-stats"></div>
+
+      <!-- Severity bar -->
+      <div style="margin-bottom:16px;">
+        <div style="font-family:var(--mono);font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;">Severity Distribution</div>
+        <div style="display:flex;height:14px;border:1px solid var(--border);overflow:hidden;gap:1px;background:var(--border);" id="sev-bar"></div>
+        <div style="display:flex;gap:16px;margin-top:5px;font-family:var(--mono);font-size:10px;color:var(--text-dim);">
+          <span style="color:var(--high)">● High</span>
+          <span style="color:var(--medium)">● Medium</span>
+          <span style="color:var(--low)">● Low</span>
+        </div>
+      </div>
+
+      <!-- Source breakdown -->
+      <div class="section-header" style="margin-top:16px;"><span class="section-header-text">By Source</span></div>
+      <div id="dash-sources" style="margin-bottom:16px;"></div>
+
+      <!-- Top tags -->
+      <div class="section-header"><span class="section-header-text">Top Tags</span></div>
+      <div class="tag-cloud" id="dash-tags"></div>
+    </div>
+
+  </main>
+
+  <!-- ═══ SIDEBAR ═══ -->
+  <aside class="sidebar" id="sidebar">
+
+    <!-- Stats box -->
+    <div class="sidebar-box" id="sb-stats" style="display:none">
+      <div class="sidebar-box-head">Quick Stats</div>
+      <div class="sidebar-box-body" id="sb-stats-body"></div>
+    </div>
+
+    <!-- Sources box -->
+    <div class="sidebar-box" id="sb-sources" style="display:none">
+      <div class="sidebar-box-head">Sources</div>
+      <div class="sidebar-box-body" id="sb-sources-body"></div>
+    </div>
+
+    <!-- Tags box -->
+    <div class="sidebar-box" id="sb-tags" style="display:none">
+      <div class="sidebar-box-head">Tags</div>
+      <div class="sidebar-box-body">
+        <div class="tag-cloud" id="sb-tags-body"></div>
+      </div>
+    </div>
+
+    <!-- Feed status box -->
+    <div class="sidebar-box">
+      <div class="sidebar-box-head">Feed Status</div>
+      <div class="sidebar-box-body" id="sb-feed-status">
+        <span style="color:var(--text-muted);font-size:11px;">Not fetched yet.</span>
+      </div>
+    </div>
+
+    <!-- About box -->
+    <div class="sidebar-box">
+      <div class="sidebar-box-head">About</div>
+      <div class="sidebar-box-body" style="font-size:11px;color:var(--text-dim);line-height:1.6;">
+        Live RSS aggregator pulling from 5 authoritative infosec sources.<br><br>
+        Summaries generated by <strong style="color:var(--text)">Groq · llama-3.3-70b</strong>.<br><br>
+        Links sourced directly from RSS feeds.
+      </div>
+    </div>
+
+  </aside>
+</div><!-- /page -->
+
+<!-- ═══ QUOTE FOOTER ═══ -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="quote-block" id="quote-text">Security is always excessive until it's not enough.</div>
+    <div class="quote-attr" id="quote-attr">— Robbie Sinclair</div>
+    <div class="footer-meta">
+      SlashSec · Powered by Groq · RSS data from SANS ISC, Schneier on Security, Krebs on Security, Bleeping Computer, This Week in Security · All links verified from RSS source
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ════════════════════════════════════
+   KEY VISIBILITY TOGGLE
+════════════════════════════════════ */
+function toggleKeyVisibility(){
+  const inp=document.getElementById("apikey");
+  const btn=document.getElementById("toggleVis");
+  if(inp.type==="password"){inp.type="text";btn.textContent="🙈 hide";}
+  else{inp.type="password";btn.textContent="👁 show";}
+}
+
+function setRefreshState(disabled){
+  const btn=document.getElementById("refreshBtn");
+  btn.disabled=disabled;
+  btn.style.opacity=disabled?"0.4":"1";
+  btn.style.cursor=disabled?"not-allowed":"pointer";
+}
+
+/* ════════════════════════════════════
+   QUOTES POOL
+════════════════════════════════════ */
+const QUOTES = [
+  { q:"Security is always excessive until it's not enough.", a:"Robbie Sinclair" },
+  { q:"The only truly secure system is one that is powered off, cast in a block of concrete and sealed in a lead-lined room with armed guards — and even then I have my doubts.", a:"Gene Spafford" },
+  { q:"Amateurs hack systems; professionals hack people.", a:"Bruce Schneier" },
+  { q:"If you spend more on coffee than on IT security, you will be hacked. What's more, you deserve to be hacked.", a:"Richard Clarke, White House Cybersecurity Advisor" },
+  { q:"There are only two types of companies: those that have been hacked, and those that will be.", a:"Robert Mueller, Former FBI Director" },
+  { q:"The Internet is a dangerous place. Every system on it faces threats from automated scanners, script kiddies, and sophisticated attackers every minute of every day.", a:"Brian Krebs" },
+  { q:"Passwords are like underwear: don't let people see it, change it very often, and you shouldn't share it with strangers.", a:"Chris Pirillo" },
+  { q:"Security used to be an inconvenience sometimes, but now it's a necessity all the time.", a:"Martina Navratilova" },
+  { q:"The question is no longer 'Will I be attacked?' The question is 'When will I be attacked, and will I be ready?'", a:"Unknown SOC Analyst, circa every day" },
+  { q:"Encryption is not optional. It is the foundation upon which a free internet is built.", a:"Electronic Frontier Foundation" },
+  { q:"Think like an attacker. Defend like an engineer.", a:"SANS Institute" },
+  { q:"The weakest link in the security chain is the human element.", a:"Kevin Mitnick" },
+  { q:"No patch, no party.", a:"Every CISO ever" },
+  { q:"Security is not a product, but a process.", a:"Bruce Schneier" },
+  { q:"A firewall is not enough. A firewall is necessary but not sufficient.", a:"Paul Vixie" },
+];
+
+/* ════════════════════════════════════
+   FEED SOURCES
+════════════════════════════════════ */
+// favicon() — Google's favicon CDN, reliably returns a small icon for any domain.
+function favicon(domain){
+  return `https://www.google.com/s2/favicons?sz=16&domain=${domain}`;
+}
+
+// sourceIcon() — renders a 16px favicon img with emoji fallback
+function sourceIcon(feed){
+  return `<img src="${feed.fav}" width="16" height="16"
+    style="vertical-align:middle;border-radius:2px;margin-right:0;"
+    onerror="this.style.display='none';this.nextSibling.style.display='inline'">` +
+    `<span style="display:none">${feed.emoji}</span>`;
+}
+
+const FEEDS = [
+  { id:"sans",     name:"SANS ISC",            desc:"Internet Storm Center",
+    color:"var(--sans-c)",     cls:"sans",     emoji:"📡",
+    fav:favicon("isc.sans.edu"),
+    urls:["https://isc.sans.edu/rssfeed_full.xml",
+          "https://isc.sans.edu/rssfeed.xml"] },
+
+  { id:"schneier", name:"Schneier on Security", desc:"Bruce Schneier",
+    color:"var(--schneier-c)", cls:"schneier", emoji:"🔐",
+    fav:favicon("schneier.com"),
+    urls:["https://www.schneier.com/feed/atom/",
+          "https://www.schneier.com/feed/"] },
+
+  { id:"krebs",    name:"Krebs on Security",    desc:"Brian Krebs",
+    color:"var(--krebs-c)",    cls:"krebs",    emoji:"🕵",
+    fav:favicon("krebsonsecurity.com"),
+    urls:["https://krebsonsecurity.com/feed/",
+          "https://krebsonsecurity.com/feed/atom/"] },
+
+  // Bleeping Computer blocks their root /feed/ via most CORS proxies.
+  // The security-category feed and FeedBurner mirror are more permissive.
+  { id:"bleeping", name:"Bleeping Computer",    desc:"Security news",
+    color:"var(--bleeping-c)", cls:"bleeping", emoji:"💻",
+    fav:favicon("bleepingcomputer.com"),
+    urls:["https://www.bleepingcomputer.com/news/security/feed/",
+          "https://feeds.feedburner.com/Bleepingcomputer",
+          "https://www.bleepingcomputer.com/feed/"] },
+
+  { id:"thisweek", name:"This Week in Security",desc:"Zack Whittaker",
+    color:"var(--thisweek-c)", cls:"thisweek", emoji:"📰",
+    fav:favicon("this.weekinsecurity.com"),
+    urls:["https://this.weekinsecurity.com/feed",
+          "https://techcrunch.com/author/zack-whittaker/feed/"] },
+];
+
+const SRC_COLOR = {
+  sans:"var(--sans-c)", schneier:"var(--schneier-c)",
+  krebs:"var(--krebs-c)", bleeping:"var(--bleeping-c)", thisweek:"var(--thisweek-c)"
+};
+
+/* ════════════════════════════════════
+   PROXIES
+════════════════════════════════════ */
+const PROXIES = [
+  u=>`https://corsproxy.io/?url=${encodeURIComponent(u)}`,
+  u=>`https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`,
+  u=>`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(u)}`,
+];
+
+async function fetchRaw(url){
+  try{const r=await fetch(url,{signal:AbortSignal.timeout(6000)});if(r.ok)return r;}catch{}
+  let last;
+  for(const mk of PROXIES){
+    try{const r=await fetch(mk(url),{signal:AbortSignal.timeout(8000)});if(r.ok)return r;throw new Error(`${r.status}`);}
+    catch(e){last=e;}
+  }
+  throw new Error(last?.message||"All proxies failed");
+}
+
+async function fetchFeed(feed){
+  for(const url of feed.urls){
+    try{const res=await fetchRaw(url);return{text:await res.text(),url};}catch{}
+  }
+  throw new Error("All URLs failed: "+feed.name);
+}
+
+/* ════════════════════════════════════
+   XML PARSING
+════════════════════════════════════ */
+function parseXML(t){return new DOMParser().parseFromString(t,"text/xml");}
+function textOf(el,...tags){for(const t of tags){const n=el.querySelector(t);if(n?.textContent?.trim())return n.textContent.trim();}return"";}
+function hrefOf(el,...tags){for(const t of tags){const n=el.querySelector(t);if(n){const h=n.getAttribute("href")||n.textContent?.trim();if(h)return h;}}return"";}
+function stripHtml(h){try{return new DOMParser().parseFromString(h,"text/html").body.textContent?.replace(/\s+/g," ").trim()||"";}catch{return h.replace(/<[^>]*>/g," ").replace(/\s+/g," ").trim();}}
+
+function parseItems(doc,feed){
+  const rss=[...doc.querySelectorAll("channel > item")];
+  const atom=[...doc.querySelectorAll("feed > entry")];
+  return(rss.length?rss:atom).slice(0,8).map(n=>({
+    feedId:feed.id, source:feed.name, icon:sourceIcon(feed), emoji:feed.emoji,
+    cls:feed.cls,   color:feed.color,
+    title:stripHtml(textOf(n,"title")),
+    excerpt:stripHtml(textOf(n,"description","summary","content","content\\:encoded")).slice(0,600),
+    url:hrefOf(n,"link")||textOf(n,"link","id","guid"),
+    date:textOf(n,"pubDate","published","updated","dc\\:date")||new Date().toISOString(),
+  })).filter(i=>i.title&&i.url);
+}
+
+/* ════════════════════════════════════
+   GROQ
+════════════════════════════════════ */
+const GROQ_MODEL="llama-3.3-70b-versatile";
+
+async function groqBatch(articles,apiKey){
+  const payload=articles.map((a,idx)=>({
+    idx, source:a.source, title:a.title, excerpt:a.excerpt.slice(0,480)
+  }));
+
+  const system=`You are a cybersecurity editor writing for a Slashdot-style infosec magazine.
+Given a JSON array of articles, return a JSON array where each element has exactly:
+{
+  "idx":      number — same as input,
+  "summary":  string — exactly 3-4 sentences: what happened, who is affected, recommended action. Punchy and direct.,
+  "severity": "high" | "medium" | "low",
+  "tags":     string[] — 2-4 short tags,
+  "dept":     string — a witty 2-5 word Slashdot-style "from the X dept." line. Dry, clever, slightly sarcastic. No quotes. Example: "yet-another-breach dept" or "patch-tuesday-forever dept" or "zero-days-are-forever dept"
+}
+Respond ONLY with raw JSON array. No markdown, no fences, no explanation.`;
+
+  const res=await fetch("https://api.groq.com/openai/v1/chat/completions",{
+    method:"POST",
+    headers:{"Content-Type":"application/json","Authorization":`Bearer ${apiKey}`},
+    body:JSON.stringify({model:GROQ_MODEL,temperature:0.25,max_tokens:2048,
+      messages:[{role:"system",content:system},{role:"user",content:JSON.stringify(payload)}]})
+  });
+  if(!res.ok){const e=await res.json().catch(()=>({}));throw new Error(e?.error?.message||`Groq ${res.status}`);}
+  const data=await res.json();
+  const raw=data.choices?.[0]?.message?.content?.trim()||"[]";
+  const clean=raw.replace(/^```json\s*/i,"").replace(/^```\s*/i,"").replace(/```\s*$/i,"").trim();
+  return JSON.parse(clean);
+}
+
+/* ════════════════════════════════════
+   UI STATE
+════════════════════════════════════ */
+let allItems=[], feedResults=[], activeFilter="all", mainView="feed";
+
+function setStatus(msg,state="live"){
+  document.getElementById("stext").textContent=msg;
+  document.getElementById("sdot").className=`sdot ${state}`;
+}
+function showError(msg){
+  const el=document.getElementById("errorbox");
+  el.style.display="block";el.textContent=`⚠ ${msg}`;setStatus("Error","err");
+}
+function clearError(){const el=document.getElementById("errorbox");el.style.display="none";el.textContent="";}
+
+function initPips(){
+  const r=document.getElementById("pip-row");
+  r.style.display="flex";
+  r.innerHTML=FEEDS.map(f=>`<div class="pip loading" id="pip-${f.id}"><div class="pd"></div>${sourceIcon(f)} ${f.name}</div>`).join("");
+}
+function setPip(id,state){const el=document.getElementById(`pip-${id}`);if(el)el.className=`pip ${state}`;}
+
+/* ════════════════════════════════════
+   SKELETONS
+════════════════════════════════════ */
+function showSkeletons(){
+  document.getElementById("story-list").innerHTML=Array.from({length:6},()=>`
+    <div class="sk-story">
+      <div class="sk" style="height:3px;width:100%;margin-bottom:10px;"></div>
+      <div class="sk" style="height:20px;width:80%;margin-bottom:8px;"></div>
+      <div class="sk" style="height:11px;width:55%;margin-bottom:10px;"></div>
+      <div class="sk" style="height:14px;width:100%;margin-bottom:4px;"></div>
+      <div class="sk" style="height:14px;width:90%;margin-bottom:4px;"></div>
+      <div class="sk" style="height:14px;width:70%;margin-bottom:10px;"></div>
+      <div style="display:flex;gap:6px;">
+        <div class="sk" style="height:18px;width:55px;"></div>
+        <div class="sk" style="height:18px;width:70px;"></div>
+      </div>
+    </div>`).join("");
+}
+
+/* ════════════════════════════════════
+   VIEW TOGGLE
+════════════════════════════════════ */
+function setMainView(v){
+  mainView=v;
+  document.getElementById("nav-feed").classList.toggle("active",v==="feed");
+  document.getElementById("nav-summary").classList.toggle("active",v==="summary");
+  document.getElementById("view-feed").style.display    =v==="feed"    ?"block":"none";
+  document.getElementById("view-summary").style.display =v==="summary" ?"block":"none";
+}
+
+/* ════════════════════════════════════
+   FILTER
+════════════════════════════════════ */
+function applyFilter(sev){
+  activeFilter=sev;
+  document.querySelectorAll("#filter-chips .fchip").forEach(c=>{
+    c.className="fchip";
+    const f=c.dataset.f||"all";
+    if(f===sev||(sev==="all"&&!c.dataset.f))c.className=`fchip f${sev[0]}`;
+  });
+  document.querySelectorAll("#story-list .story").forEach(s=>{
+    s.classList.toggle("dimmed",sev!=="all"&&s.dataset.sev!==sev);
+  });
+}
+
+/* ════════════════════════════════════
+   RENDER SIDEBAR
+════════════════════════════════════ */
+function renderSidebar(items){
+  const total=items.length;
+  const hi=items.filter(i=>i.severity==="high").length;
+  const med=items.filter(i=>i.severity==="medium").length;
+  const lo=items.filter(i=>i.severity==="low").length;
+
+  // Quick stats
+  document.getElementById("sb-stats").style.display="block";
+  document.getElementById("sb-stats-body").innerHTML=[
+    {l:"Total Stories",v:total,sc:"",sev:"all"},
+    {l:"High Severity",v:hi,sc:"var(--high)",sev:"high"},
+    {l:"Medium",v:med,sc:"var(--medium)",sev:"medium"},
+    {l:"Low",v:lo,sc:"var(--low)",sev:"low"},
+  ].map(s=>`
+    <div class="sb-stat" style="--sc:${s.sc}" onclick="applyFilter('${s.sev}');setMainView('feed')">
+      <span class="sb-label">${s.l}</span>
+      <span class="sb-val">${s.v}</span>
+    </div>`).join("");
+
+  // Sources
+  document.getElementById("sb-sources").style.display="block";
+  document.getElementById("sb-sources-body").innerHTML=FEEDS.map(f=>{
+    const n=items.filter(i=>i.feedId===f.id).length;
+    return`<div class="src-row" style="--sc:${f.color}">
+      <div class="src-dot" style="background:${f.color}"></div>
+      <span class="src-name">${sourceIcon(f)} ${f.name}</span>
+      <span class="src-n">${n}</span>
+    </div>`;
+  }).join("");
+
+  // Tags
+  const tm={};items.forEach(i=>(i.tags||[]).forEach(t=>{tm[t]=(tm[t]||0)+1;}));
+  document.getElementById("sb-tags").style.display="block";
+  document.getElementById("sb-tags-body").innerHTML=Object.entries(tm)
+    .sort((a,b)=>b[1]-a[1]).slice(0,20)
+    .map(([t,n])=>`<span class="tc-tag">${t}<span class="tc-n">×${n}</span></span>`).join("");
+
+  // Feed status
+  document.getElementById("sb-feed-status").innerHTML=FEEDS.map((f,i)=>{
+    const ok=feedResults[i]?.status==="fulfilled";
+    return`<div class="feed-status-row">
+      <div class="fsr-dot" style="background:${ok?"var(--low)":"var(--high)"}"></div>
+      <span style="flex:1;font-size:11px;color:var(--text-dim)">${sourceIcon(f)} ${f.name}</span>
+      <span style="font-size:10px;color:${ok?"var(--low)":"var(--high)"}">${ok?"live":"fail"}</span>
+    </div>`;
+  }).join("");
+}
+
+/* ════════════════════════════════════
+   RENDER DASHBOARD
+════════════════════════════════════ */
+function renderDashboard(items){
+  const total=items.length;
+  const hi=items.filter(i=>i.severity==="high").length;
+  const med=items.filter(i=>i.severity==="medium").length;
+  const lo=items.filter(i=>i.severity==="low").length;
+
+  document.getElementById("dash-stats").innerHTML=[
+    {l:"Stories",v:total,sc:"",sev:"all"},
+    {l:"High",v:hi,sc:"var(--high)",sev:"high"},
+    {l:"Medium",v:med,sc:"var(--medium)",sev:"medium"},
+    {l:"Low",v:lo,sc:"var(--low)",sev:"low"},
+    {l:"Live Feeds",v:feedResults.filter(r=>r.status==="fulfilled").length,sc:"var(--low)",sev:null},
+  ].map(s=>`
+    <div style="background:var(--surface);border:1px solid var(--border);border-top:3px solid ${s.sc||"var(--border2)"};
+      padding:12px 14px;cursor:${s.sev?"pointer":"default"}"
+      ${s.sev?`onclick="setMainView('feed');applyFilter('${s.sev}')"`:""}  >
+      <div style="font-family:var(--mono);font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.08em;">${s.l}</div>
+      <div style="font-family:var(--serif);font-size:28px;font-weight:700;color:${s.sc||"var(--heading)"};line-height:1;margin:4px 0 2px;">${s.v}</div>
+      ${s.sev?`<div style="font-family:var(--mono);font-size:10px;color:var(--text-muted);">click to filter</div>`:""}
+    </div>`).join("");
+
+  // Sev bar
+  document.getElementById("sev-bar").innerHTML=`
+    <div style="width:${(hi/total*100).toFixed(1)}%;background:var(--high);"></div>
+    <div style="width:${(med/total*100).toFixed(1)}%;background:var(--medium);"></div>
+    <div style="width:${(lo/total*100).toFixed(1)}%;background:var(--low);"></div>`;
+
+  // Source bars
+  const max=Math.max(...FEEDS.map(f=>items.filter(i=>i.feedId===f.id).length),1);
+  document.getElementById("dash-sources").innerHTML=FEEDS.map(f=>{
+    const n=items.filter(i=>i.feedId===f.id).length;
+    return`<div style="margin-bottom:8px;">
+      <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--text-dim);margin-bottom:3px;">
+        <span>${sourceIcon(f)} ${f.name}</span><span style="color:${f.color};font-weight:700;">${n}</span>
+      </div>
+      <div style="height:6px;background:var(--border);border-radius:1px;">
+        <div style="height:100%;width:${(n/max*100).toFixed(0)}%;background:${f.color};border-radius:1px;transition:width .5s ease;"></div>
+      </div>
+    </div>`;
+  }).join("");
+
+  // Tags
+  const tm={};items.forEach(i=>(i.tags||[]).forEach(t=>{tm[t]=(tm[t]||0)+1;}));
+  document.getElementById("dash-tags").innerHTML=Object.entries(tm)
+    .sort((a,b)=>b[1]-a[1]).slice(0,20)
+    .map(([t,n])=>`<span class="tc-tag">${t}<span class="tc-n">×${n}</span></span>`).join("");
+}
+
+/* ════════════════════════════════════
+   RENDER FEED (SLASHDOT STORIES)
+════════════════════════════════════ */
+function renderFeed(items){
+  document.getElementById("filter-chips").style.display="flex";
+
+  document.getElementById("story-list").innerHTML=items.map((item,idx)=>{
+    const sev=["high","medium","low"].includes(item.severity)?item.severity:"low";
+    const color=SRC_COLOR[item.cls]||"var(--text-dim)";
+    const date=item.date?new Date(item.date).toLocaleDateString("en-US",{weekday:"short",month:"short",day:"numeric",year:"numeric",hour:"2-digit",minute:"2-digit"}):"—";
+    const tags=(item.tags||[]).map(t=>`<span class="stag" style="--sc:${color}">${t}</span>`).join("");
+    const dept=item.dept||"security-is-hard dept";
+    const sevLabel=sev==="high"?"High Alert":sev==="medium"?"Noteworthy":"FYI";
+    const url=item.url||"#";
+
+    return`
+      <article class="story" data-sev="${sev}" style="--sc:${color}" style="animation-delay:${idx*25}ms">
+        <div class="story-src-bar" style="background:${color}"></div>
+        <div class="story-title">
+          <a href="${url}" target="_blank" rel="noopener noreferrer">${item.title}</a>
+        </div>
+        <div class="story-byline">
+          <span class="byline-src" style="--sc:${color}">${item.icon} ${item.source}</span>
+          <span class="byline-sep">·</span>
+          <span>${date}</span>
+          <span class="byline-sep">·</span>
+          <span class="score-pill sev-${sev}">Score: ${sevLabel}</span>
+          <span class="byline-sep">·</span>
+          <span class="byline-dept">from the <em>${dept}</em></span>
+        </div>
+        <div class="story-body">${item.summary||item.excerpt||""}</div>
+        <div class="story-footer">
+          <div class="story-tags">${tags}</div>
+          <a class="story-readmore" href="${url}" target="_blank" rel="noopener noreferrer">Read More… <span class="rss-tick">✓</span></a>
+        </div>
+      </article>`;
+  }).join("");
+}
+
+/* ════════════════════════════════════
+   PIPELINE
+════════════════════════════════════ */
+async function runPipeline(){
+  const apiKey=document.getElementById("apikey").value.trim();
+  if(!apiKey){showError("Enter your Groq API key in the bar above. Free at console.groq.com");return;}
+
+  clearError();
+  setRefreshState(true);
+  allItems=[];
+  initPips();
+  showSkeletons();
+  setMainView("feed");
+  setStatus("Fetching RSS feeds…","live");
+
+  // Step 1 — Fetch all feeds
+  const raw=[];
+  feedResults=await Promise.allSettled(FEEDS.map(async feed=>{
+    setPip(feed.id,"loading");
+    const {text}=await fetchFeed(feed);
+    const items=parseItems(parseXML(text),feed);
+    if(!items.length)throw new Error("No items");
+    raw.push(...items);
+    setPip(feed.id,"ok");
+    return items.length;
+  }));
+
+  FEEDS.forEach((f,i)=>{
+    if(feedResults[i].status==="rejected"){
+      console.warn(`Feed failed [${f.name}]:`,feedResults[i].reason?.message);
+      setPip(f.id,"fail");
+    }
+  });
+
+  if(!raw.length){
+    showError("All feeds failed — likely a CORS/network issue. Try a different browser or network.");
+    setRefreshState(false);
+    return;
+  }
+
+  const failed=FEEDS.filter((_,i)=>feedResults[i].status==="rejected").map(f=>f.name);
+  if(failed.length){
+    const el=document.getElementById("errorbox");
+    el.style.display="block";
+    el.textContent=`⚠ Partial load — failed: ${failed.join(", ")}. Showing ${raw.length} articles from live feeds.`;
+  }
+
+  // Step 2 — Groq batch summaries
+  const BATCH=8;
+  const enriched=[];
+  for(let i=0;i<raw.length;i+=BATCH){
+    const batch=raw.slice(i,i+BATCH);
+    setStatus(`Summarising articles ${i+1}–${Math.min(i+BATCH,raw.length)} of ${raw.length}…`,"live");
+    try{
+      const results=await groqBatch(batch,apiKey);
+      const byIdx=Object.fromEntries(results.map(r=>[r.idx,r]));
+      batch.forEach((art,j)=>{
+        const ai=byIdx[j]||{};
+        enriched.push({...art,summary:ai.summary||art.excerpt,severity:ai.severity||"low",tags:ai.tags||[],dept:ai.dept||""});
+      });
+    }catch(e){
+      console.warn("Groq batch failed:",e.message);
+      batch.forEach(art=>enriched.push({...art,severity:"low",tags:[],dept:""}));
+    }
+  }
+
+  // Step 3 — Sort
+  const sevRank={high:3,medium:2,low:1};
+  allItems=enriched.sort((a,b)=>{
+    const ds=(sevRank[b.severity]||0)-(sevRank[a.severity]||0);
+    return ds!==0?ds:new Date(b.date)-new Date(a.date);
+  });
+
+  renderFeed(allItems);
+  renderSidebar(allItems);
+  renderDashboard(allItems);
+  applyFilter("all");
+
+  const live=FEEDS.filter((_,i)=>feedResults[i].status==="fulfilled").length;
+  setStatus(`${allItems.length} stories · ${live}/${FEEDS.length} feeds live · Groq ${GROQ_MODEL}`,"idle");
+  setRefreshState(false);
+  document.getElementById("nav-count").textContent=`${allItems.length} stories`;
+  document.getElementById("nav-dateline").textContent=
+    new Date().toLocaleDateString("en-US",{weekday:"long",month:"long",day:"numeric",year:"numeric"});
+
+  // Pick random quote
+  const q=QUOTES[Math.floor(Math.random()*QUOTES.length)];
+  document.getElementById("quote-text").textContent=q.q;
+  document.getElementById("quote-attr").textContent=`— ${q.a}`;
+}
+
+/* ════════════════════════════════════
+   THEME
+════════════════════════════════════ */
+function toggleTheme(){
+  const next=document.documentElement.dataset.theme==="dark"?"bright":"dark";
+  document.documentElement.dataset.theme=next;
+  document.getElementById("themeBtn").textContent=next==="dark"?"☾":"☀";
+  sessionStorage.setItem("ss-theme",next);
+}
+
+/* ════════════════════════════════════
+   INIT
+════════════════════════════════════ */
+(function(){
+  const t=sessionStorage.getItem("ss-theme")||"dark";
+  document.documentElement.dataset.theme=t;
+  document.getElementById("themeBtn").textContent=t==="dark"?"☾":"☀";
+  const k=sessionStorage.getItem("ss-key");
+  if(k)document.getElementById("apikey").value=k;
+  document.getElementById("apikey").addEventListener("input",e=>sessionStorage.setItem("ss-key",e.target.value));
+  document.getElementById("nav-dateline").textContent=
+    new Date().toLocaleDateString("en-US",{weekday:"long",month:"long",day:"numeric",year:"numeric"});
+  // Pick a quote on load
+  const q=QUOTES[Math.floor(Math.random()*QUOTES.length)];
+  document.getElementById("quote-text").textContent=q.q;
+  document.getElementById("quote-attr").textContent=`— ${q.a}`;
+  setMainView("feed");
+})();
+</script>
+</body>
+</html>
